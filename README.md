@@ -4,6 +4,18 @@
 - 本网站所载的资料并不构成投资的意见或建议，据此操作风险自担。股市有风险，投资需谨慎！
 
 
+## Quickstart
+#### 1. 数据获取
+```
+nohup python -u python data/get_stock_data_train.py > get_train.log 2>&1 &
+nohup python -u python data/get_stock_data_test.py > get_test.log 2>&1 &
+```
+#### 2. 运行模型
+```
+python main.py
+```
+
+
 ## 代码参考
 本项目的代码参考了以下两个repo,感谢原作者！参考内容包括股票Gym环境、股票数据获取、结果的可视化。
 - [RL-Stock](https://github.com/wangshub/RL-Stock)
@@ -21,19 +33,6 @@ todo:
 - 将reward的定义抽出来
 - 特征优化
 - 模型优化
-
-
-## Quickstart
-#### 1. 数据获取
-```
-nohup python -u python data/get_stock_data_train.py > get_train.log 2>&1 &
-nohup python -u python data/get_stock_data_test.py > get_test.log 2>&1 &
-```
-#### 2. 运行模型
-```
-python main.py
-```
-
 
 ## 股票数据
 - 数据和方法皆来源于网络，本项目开发者无法保证有效性和准确性！
