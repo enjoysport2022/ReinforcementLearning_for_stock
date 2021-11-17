@@ -11,13 +11,13 @@ def find_file(path, name):
 font = fm.FontProperties(fname='font/wqy-microhei.ttc')
 plt.rcParams['axes.unicode_minus'] = False
 
-def plot_daily_profits(stock_code, daily_profits):
+def plot_daily_profits(stock_code, RL_model, daily_profits):
     fig, ax = plt.subplots()
-    ax.plot(daily_profits, '-o', label=stock_code, marker='o', ms=10, alpha=0.7, mfc='orange')
+    ax.plot(daily_profits, '-o', label=stock_code + "_" + RL_model, marker='o', ms=10, alpha=0.7, mfc='orange')
     ax.grid()
     plt.xlabel('step')
     plt.ylabel('profit')
     ax.legend(prop=font)
     os.makedirs('./img/', exist_ok=True)
-    plt.savefig(f'./img/{stock_code}.png')
+    plt.savefig(f'./img/{stock_code + "_" + RL_model}.png')
     plt.show()

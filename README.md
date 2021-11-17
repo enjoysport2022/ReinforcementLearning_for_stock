@@ -3,21 +3,37 @@
 ## 免责声明
 - 本网站所载的资料并不构成投资的意见或建议，据此操作风险自担。股市有风险，投资需谨慎！
 
-## 代码参考
 
+## 代码参考
 本项目的代码参考了以下两个repo,感谢原作者！参考内容包括股票Gym环境、股票数据获取、结果的可视化。
 - [RL-Stock](https://github.com/wangshub/RL-Stock)
 - [Create custom gym environments from scratch — A stock market example](https://towardsdatascience.com/creating-a-custom-openai-gym-environment-for-stock-trading-be532be3910e)
 
 主要改动:
-1. RL算法模型使用最新版本的stable-baselines3，之前的stable-baselines已处于维护状态，且容易遇到tensorflow版本不兼容的问题
-2. 调整代码结构
+1. 调整代码结构
+2. RL算法模型使用最新版本的stable-baselines3，之前的stable-baselines已处于维护状态，且容易遇到tensorflow版本不兼容的问题
+3. 丰富RL模型
 
 todo:
 - 增加交易手续费
 - 将特征接口抽出来
 - 将模型接口抽出来
 - 将reward的定义抽出来
+- 特征优化
+- 模型优化
+
+
+## Quickstart
+#### 1. 数据获取
+```
+nohup python -u python data/get_stock_data_train.py > get_train.log 2>&1 &
+nohup python -u python data/get_stock_data_test.py > get_test.log 2>&1 &
+```
+#### 2. 运行模型
+```
+python main.py
+```
+
 
 ## 股票数据
 - 数据和方法皆来源于网络，本项目开发者无法保证有效性和准确性！
@@ -25,11 +41,7 @@ todo:
 股票证券数据集来自于 [baostock](http://baostock.com/baostock/index.php/%E9%A6%96%E9%A1%B5)，一个免费、开源的证券数据平台，提供 Python API。
 
 项目中将1990-01-01至2019-11-29的股票数据作为训练集，之后的一个月(2019-12-01至2019-12-31)数据作为测试集
-数据获取方法:
-```
-nohup python -u python data/get_stock_data_train.py > get_train.log 2>&1 &
-nohup python -u python data/get_stock_data_test.py > get_test.log 2>&1 &
-```
+
 
 ## 🤖 OpenAI Gym 股票交易环境
 
@@ -91,21 +103,28 @@ reward = 1 if reward > 0 else -100
 # reward = self.balance * delay_modifier
 ```
 
-### 策略梯度
+## RL算法
+- PPO
+- A2C
 
-因为动作输出的数值是连续，因此使用基于策略梯度的优化算法，其中比较知名的是 [PPO 算法](https://arxiv.org/abs/1707.06347)，OpenAI 和许多文献已把 PPO 作为强化学习研究中首选的算法。PPO 优化算法 Python 实现参考 [stable-baselines](https://stable-baselines.readthedocs.io/en/master/modules/ppo2.html)。
-
-## 🕵️‍♀️ 模拟实验
-
-**单只股票**
+## 🕵️‍♀️ 单只股票模拟实验结果
 
 - 初始本金 `10000`
 - 股票代码：`sh.600000`
 - 训练集： `stockdata/train/sh.600000.浦发银行.csv`
 - 测试集： `stockdata/test/sh.600000.浦发银行.csv`
-- 模拟操作 `20` 天，最终盈利约 `162`
+- 模拟操作 `20` 天
 
-<img src="img/sh.600000.png" alt="drawing" width="70%"/>
+盈利情况:
+
+PPO: `75`
+<img src="img/sh.600000_PPO.png" alt="drawing" width="70%"/>
+
+A2C: `367`
+<img src="img/sh.600000_A2C.png" alt="drawing" width="70%"/>
+
+
+
 
 ## 📚 参考资料
 1. [Create custom gym environments from scratch — A stock market example](https://towardsdatascience.com/creating-a-custom-openai-gym-environment-for-stock-trading-be532be3910e)
