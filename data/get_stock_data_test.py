@@ -61,7 +61,7 @@ if __name__ == '__main__':
     # codes = None  # codes为None下载所有股票数据
 
     # 获取全部股票的日K线数据
-    datapath_train = './train'
-    mkdir(datapath_train)
-    downloader = Downloader(datapath_train, date_start='2020-01-01', date_end='2020-12-31')
+    datapath_test = './test'
+    mkdir(datapath_test)
+    downloader = Downloader(datapath_test, date_start='2020-01-01', date_end='2020-12-31')
     downloader.run(codes)
