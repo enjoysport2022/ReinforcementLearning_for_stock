@@ -30,21 +30,37 @@ class Downloader(object):
         print(stock_df)
         return stock_df
 
-    def run(self):
+    def run(self, codes):
         stock_df = self.get_codes_by_date(self.date_end)
-        for index, row in stock_df.iterrows():
-            print(f'processing {row["code"]} {row["code_name"]}')
-            df_code = bs.query_history_k_data_plus(row["code"], self.fields,
-                                                   start_date=self.date_start,
-                                                   end_date=self.date_end,
-                                                   adjustflag="1").get_data() # adjustflag：复权类型，默认不复权：3；1：后复权；2：前复权
-            df_code.to_csv(f'{self.output_dir}/{row["code"]}.{row["code_name"].replace("*","star_")}.csv', index=False)
+
+        if codes is None:
+            for index, row in stock_df.iterrows():
+                print(f'processing {row["code"]} {row["code_name"]}')
+                df_code = bs.query_history_k_data_plus(row["code"], self.fields,
+                                                       start_date=self.date_start,
+                                                       end_date=self.date_end,
+                                                       adjustflag="1").get_data() # adjustflag：复权类型，默认不复权：3；1：后复权；2：前复权
+                df_code.to_csv(f'{self.output_dir}/{row["code"]}.{row["code_name"].replace("*","star_")}.csv', index=False)
+        else:
+            for index, row in stock_df.iterrows():
+                if row["code"] not in codes:
+                    continue
+                print(f'processing {row["code"]} {row["code_name"]}')
+                df_code = bs.query_history_k_data_plus(row["code"], self.fields,
+                                                       start_date=self.date_start,
+                                                       end_date=self.date_end,
+                                                       adjustflag="1").get_data()  # adjustflag：复权类型，默认不复权：3；1：后复权；2：前复权
+                df_code.to_csv(f'{self.output_dir}/{row["code"]}.{row["code_name"].replace("*", "star_")}.csv',
+                               index=False)
+
         self.exit()
 
 if __name__ == '__main__':
 
+    codes = ['sh.600000', 'sh.600001']
+
     # 获取全部股票的日K线数据
     datapath_train = './train'
     mkdir(datapath_train)
-    downloader = Downloader(datapath_train, date_start='1990-01-01', date_end='2019-11-29')
-    downloader.run()
+    downloader = Downloader(datapath_train, date_start='1990-01-01', date_end='2019-12-31')
+    downloader.run(codes)
