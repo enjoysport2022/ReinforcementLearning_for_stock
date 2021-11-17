@@ -34,7 +34,7 @@ class StockTradingEnv(gym.Env):
 
         # Prices contains the OHCL values for the last five prices
         self.observation_space = spaces.Box(
-            low=0, high=1, shape=(32,), dtype=np.float16)
+            low=0, high=1, shape=(30,), dtype=np.float16)
 
     def _next_observation(self):
         obs = np.array([
@@ -50,7 +50,6 @@ class StockTradingEnv(gym.Env):
             self.df.loc[self.current_step - 1, 'peTTM'] / 1e4,
             self.df.loc[self.current_step - 1, 'pbMRQ'] / 100,
             self.df.loc[self.current_step - 1, 'psTTM'] / 100,
-            self.df.loc[self.current_step - 1, 'pctChg'] / 1e3,
 
             self.df.loc[self.current_step, 'open'] / MAX_SHARE_PRICE,
             self.df.loc[self.current_step, 'high'] / MAX_SHARE_PRICE,
@@ -64,7 +63,6 @@ class StockTradingEnv(gym.Env):
             self.df.loc[self.current_step, 'peTTM'] / 1e4,
             self.df.loc[self.current_step, 'pbMRQ'] / 100,
             self.df.loc[self.current_step, 'psTTM'] / 100,
-            self.df.loc[self.current_step, 'pctChg'] / 1e3,
 
             self.balance / MAX_ACCOUNT_BALANCE,
             self.max_net_worth / MAX_ACCOUNT_BALANCE,
@@ -127,13 +125,16 @@ class StockTradingEnv(gym.Env):
             self.current_step = 6  # loop training
             # done = True
 
+
         # reward 1:
-        reward = self.net_worth - INITIAL_ACCOUNT_BALANCE
-        reward = 1 if reward > 0 else -100
+        # reward = self.net_worth - INITIAL_ACCOUNT_BALANCE
+        # reward = 1 if reward > 0 else -100
+        # 需要修改 self.reward_range = (0, MAX_ACCOUNT_BALANCE)
+
 
         # reward 2:
-        # delay_modifier = (self.current_step / MAX_STEPS)
-        # reward = self.balance * delay_modifier
+        delay_modifier = (self.current_step / MAX_STEPS)
+        reward = self.balance * delay_modifier
 
         if self.net_worth <= 0:
             done = True

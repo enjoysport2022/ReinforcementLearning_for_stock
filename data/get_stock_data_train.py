@@ -38,7 +38,7 @@ class Downloader(object):
                                                    start_date=self.date_start,
                                                    end_date=self.date_end,
                                                    adjustflag="1").get_data() # adjustflag：复权类型，默认不复权：3；1：后复权；2：前复权
-            df_code.to_csv(f'{self.output_dir}/{row["code"]}.{row["code_name"]}.csv', index=False)
+            df_code.to_csv(f'{self.output_dir}/{row["code"]}.{row["code_name"].replace("*","star_")}.csv', index=False)
         self.exit()
 
 if __name__ == '__main__':
