@@ -117,10 +117,10 @@ reward = 1 if reward > 0 else -100
 
 盈利情况:
 
-PPO: `75`
+PPO: 盈利`415`
 <img src="img/sh.600000_PPO.png" alt="drawing" width="70%"/>
 
-A2C: `367`
+A2C: 亏损`534`
 <img src="img/sh.600000_A2C.png" alt="drawing" width="70%"/>
 
 
