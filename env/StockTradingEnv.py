@@ -18,6 +18,36 @@ MAX_DAY_CHANGE = 1
 
 INITIAL_ACCOUNT_BALANCE = args['env_args']['initial_account_balance']
 
+def feature_engineer(df, current_step):
+    feas = [
+        df.loc[current_step - 1, 'open'] / MAX_SHARE_PRICE,
+        df.loc[current_step - 1, 'high'] / MAX_SHARE_PRICE,
+        df.loc[current_step - 1, 'low'] / MAX_SHARE_PRICE,
+        df.loc[current_step - 1, 'close'] / MAX_SHARE_PRICE,
+        df.loc[current_step - 1, 'volume'] / MAX_VOLUME,
+        df.loc[current_step - 1, 'amount'] / MAX_AMOUNT,
+        df.loc[current_step - 1, 'adjustflag'] / 10,
+        df.loc[current_step - 1, 'tradestatus'] / 1,
+        df.loc[current_step - 1, 'pctChg'] / 100,
+        df.loc[current_step - 1, 'peTTM'] / 1e4,
+        df.loc[current_step - 1, 'pbMRQ'] / 100,
+        df.loc[current_step - 1, 'psTTM'] / 100,
+
+        df.loc[current_step, 'open'] / MAX_SHARE_PRICE,
+        df.loc[current_step, 'high'] / MAX_SHARE_PRICE,
+        df.loc[current_step, 'low'] / MAX_SHARE_PRICE,
+        df.loc[current_step, 'close'] / MAX_SHARE_PRICE,
+        df.loc[current_step, 'volume'] / MAX_VOLUME,
+        df.loc[current_step, 'amount'] / MAX_AMOUNT,
+        df.loc[current_step, 'adjustflag'] / 10,
+        df.loc[current_step, 'tradestatus'] / 1,
+        df.loc[current_step, 'pctChg'] / 100,
+        df.loc[current_step, 'peTTM'] / 1e4,
+        df.loc[current_step, 'pbMRQ'] / 100,
+        df.loc[current_step, 'psTTM'] / 100
+    ]
+    return feas
+
 class StockTradingEnv(gym.Env):
     """A stock trading environment for OpenAI gym"""
     metadata = {'render.modes': ['human']}
@@ -32,38 +62,13 @@ class StockTradingEnv(gym.Env):
         self.action_space = spaces.Box(
             low=np.array([0, 0]), high=np.array([3, 1]), dtype=np.float16)
 
-        # Prices contains the OHCL values for the last five prices
         self.observation_space = spaces.Box(
             low=0, high=1, shape=(30,), dtype=np.float16)
 
     def _next_observation(self):
-        obs = np.array([
-            self.df.loc[self.current_step - 1, 'open'] / MAX_SHARE_PRICE,
-            self.df.loc[self.current_step - 1, 'high'] / MAX_SHARE_PRICE,
-            self.df.loc[self.current_step - 1, 'low'] / MAX_SHARE_PRICE,
-            self.df.loc[self.current_step - 1, 'close'] / MAX_SHARE_PRICE,
-            self.df.loc[self.current_step - 1, 'volume'] / MAX_VOLUME,
-            self.df.loc[self.current_step - 1, 'amount'] / MAX_AMOUNT,
-            self.df.loc[self.current_step - 1, 'adjustflag'] / 10,
-            self.df.loc[self.current_step - 1, 'tradestatus'] / 1,
-            self.df.loc[self.current_step - 1, 'pctChg'] / 100,
-            self.df.loc[self.current_step - 1, 'peTTM'] / 1e4,
-            self.df.loc[self.current_step - 1, 'pbMRQ'] / 100,
-            self.df.loc[self.current_step - 1, 'psTTM'] / 100,
 
-            self.df.loc[self.current_step, 'open'] / MAX_SHARE_PRICE,
-            self.df.loc[self.current_step, 'high'] / MAX_SHARE_PRICE,
-            self.df.loc[self.current_step, 'low'] / MAX_SHARE_PRICE,
-            self.df.loc[self.current_step, 'close'] / MAX_SHARE_PRICE,
-            self.df.loc[self.current_step, 'volume'] / MAX_VOLUME,
-            self.df.loc[self.current_step, 'amount'] / MAX_AMOUNT,
-            self.df.loc[self.current_step, 'adjustflag'] / 10,
-            self.df.loc[self.current_step, 'tradestatus'] / 1,
-            self.df.loc[self.current_step, 'pctChg'] / 100,
-            self.df.loc[self.current_step, 'peTTM'] / 1e4,
-            self.df.loc[self.current_step, 'pbMRQ'] / 100,
-            self.df.loc[self.current_step, 'psTTM'] / 100,
-
+        feas = feature_engineer(self.df, self.current_step)
+        obs = np.array(feas + [
             self.balance / MAX_ACCOUNT_BALANCE,
             self.max_net_worth / MAX_ACCOUNT_BALANCE,
             self.shares_held / MAX_NUM_SHARES,

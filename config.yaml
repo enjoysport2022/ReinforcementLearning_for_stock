@@ -1,10 +1,10 @@
 env_args:
     initial_account_balance: 100000  # 初始资金
-    commission: 0.00025 #佣金费率,佣金=成交金额*万分之2.5
+    commission: 0.00025 # 佣金费率,佣金=成交金额*万分之2.5
 
 train_args:
-    rl_model: 'A2C' # 可选: 'PPO', 'A2C', 'DDPG', 'TD3'
-    stock_code: 'sh.600000'
+    rl_model: 'PPO' # 可选: 'PPO', 'A2C', 'DDPG', 'TD3'
+    stock_code: 'sh.600000' # 股票代码
     total_timesteps: 10000
 
 #worker_args:
