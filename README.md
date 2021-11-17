@@ -7,8 +7,8 @@
 ## Quickstart
 #### 1. 数据获取
 ```
-nohup python -u python data/get_stock_data_train.py > get_train.log 2>&1 &
-nohup python -u python data/get_stock_data_test.py > get_test.log 2>&1 &
+nohup python -u data/get_stock_data_train.py > data/get_train.log 2>&1 &
+nohup python -u data/get_stock_data_test.py > data/get_test.log 2>&1 &
 ```
 #### 2. 设置配置文件config.yaml(也可使用默认配置参数)
 #### 3. 运行模型
