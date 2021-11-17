@@ -85,11 +85,13 @@ class StockTradingEnv(gym.Env):
 
         if action_type < 1:
             # Buy amount % of balance in shares
-            total_possible = int(self.balance / current_price)
-            shares_bought = int(total_possible * amount)
+            additional_cost = self.balance * amount
+            if additional_cost <= 20000:
+                shares_bought = (additional_cost-5)/current_price # 此时手续费为5元
+            else:
+                # 买入价格为 current_price * (1+交易佣金费率)
+                shares_bought = additional_cost / (current_price * (1 + args['env_args']['commission']))
             prev_cost = self.cost_basis * self.shares_held
-            additional_cost = shares_bought * current_price
-
             self.balance -= additional_cost
             self.cost_basis = (
                 prev_cost + additional_cost) / (self.shares_held + shares_bought)
@@ -98,12 +100,15 @@ class StockTradingEnv(gym.Env):
         elif action_type < 2:
             # Sell amount % of shares held
             shares_sold = int(self.shares_held * amount)
-            self.balance += shares_sold * current_price
+            # 卖出获得的现金为: 卖出份额*当前股票价格*(1-交易佣金费率)
+            current_get_balance = shares_sold * current_price * (1 - args['env_args']['commission'])
+            self.balance += current_get_balance
             self.shares_held -= shares_sold
             self.total_shares_sold += shares_sold
-            self.total_sales_value += shares_sold * current_price
+            self.total_sales_value += current_get_balance
 
-        self.net_worth = self.balance + self.shares_held * current_price
+        # 当前持有总资产:现金+股票
+        self.net_worth = self.balance + self.shares_held * current_price * (1 - args['env_args']['commission'])
 
         if self.net_worth > self.max_net_worth:
             self.max_net_worth = self.net_worth

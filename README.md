@@ -26,9 +26,9 @@ python main.py
 1. 调整代码结构,增加配置文件
 2. RL算法模型使用最新版本的stable-baselines3，之前的stable-baselines已处于维护状态，且容易遇到tensorflow版本不兼容的问题
 3. 丰富RL模型
+4. 增加交易手续费
 
 todo:
-- 增加交易手续费
 - 将特征接口抽出来
 - 将模型接口抽出来
 - 将reward的定义抽出来
