@@ -57,7 +57,7 @@ class Downloader(object):
 
 if __name__ == '__main__':
 
-    codes = ['sh.600000', 'sh.600001']
+    codes = ['sh.600000', 'sh.600006']
 
     # 获取全部股票的日K线数据
     datapath_train = './train'

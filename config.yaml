@@ -1,5 +1,5 @@
 env_args:
-    initial_account_balance: 10000  # 初始资金
+    initial_account_balance: 100000  # 初始资金
     commission: 0.00025 #佣金费率,佣金=成交金额*万分之2.5
 
 train_args:
