@@ -27,6 +27,7 @@ python main.py
 2. RL算法模型使用最新版本的stable-baselines3，之前的stable-baselines已处于维护状态，且容易遇到tensorflow版本不兼容的问题
 3. 丰富RL模型
 4. 增加交易手续费
+5. 股票价格后复权
 
 todo:
 - 将特征接口抽出来
@@ -38,7 +39,7 @@ todo:
 ## 股票数据
 - 数据和方法皆来源于网络，本项目开发者无法保证有效性和准确性！
 
-- 股票证券数据集来自于 [baostock](http://baostock.com/baostock/index.php/%E9%A6%96%E9%A1%B5)，一个免费、开源的证券数据平台，提供 Python API。
+- 股票证券数据集来自于 [baostock](http://baostock.com/baostock/index.php/Python_API%E6%96%87%E6%A1%A3)，一个免费、开源的证券数据平台，提供 Python API。
 
 - 项目中将1990-01-01至2019-11-29的股票数据作为训练集，之后的一个月(2019-12-01至2019-12-31)数据作为测试集
 
