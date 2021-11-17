@@ -1,0 +1,12 @@
+env_args:
+    initial_account_balance: 10000  # 初始资金
+
+train_args:
+    rl_model: 'PPO'
+    stock_code: 'sh.600000'
+    total_timesteps: 10000
+
+#worker_args:
+#    server_address: ''
+#    num_parallel: 8
+

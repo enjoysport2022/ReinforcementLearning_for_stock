@@ -2,6 +2,10 @@ import random
 import gym
 import numpy as np
 from gym import spaces
+import yaml
+
+with open('config.yaml') as f:
+    args = yaml.safe_load(f)
 
 MAX_ACCOUNT_BALANCE = 2147483647
 MAX_NUM_SHARES = 2147483647
@@ -12,8 +16,7 @@ MAX_OPEN_POSITIONS = 5
 MAX_STEPS = 20000
 MAX_DAY_CHANGE = 1
 
-# 初始资金
-INITIAL_ACCOUNT_BALANCE = 10000
+INITIAL_ACCOUNT_BALANCE = args['env_args']['initial_account_balance']
 
 class StockTradingEnv(gym.Env):
     """A stock trading environment for OpenAI gym"""

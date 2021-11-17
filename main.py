@@ -3,6 +3,10 @@ from stable_baselines3 import PPO, A2C, DDPG, TD3
 from stable_baselines3.common.vec_env import DummyVecEnv
 from env.StockTradingEnv import StockTradingEnv
 from util import find_file, plot_daily_profits
+import yaml
+
+with open('config.yaml') as f:
+    args = yaml.safe_load(f)
 
 def stock_trade(stock_file, RL_model):
 
@@ -19,7 +23,7 @@ def stock_trade(stock_file, RL_model):
     elif RL_model == 'TD3':
         model = TD3("MlpPolicy", env, verbose=0, tensorboard_log='./log')
 
-    model.learn(total_timesteps=int(1e4))
+    model.learn(total_timesteps=args['train_args']['total_timesteps'])
 
     # 模型测试
     day_profits = []
@@ -42,6 +46,7 @@ def test_a_stock_trade(stock_code, RL_model):
     plot_daily_profits(stock_code, RL_model, daily_profits)
 
 if __name__ == '__main__':
-    test_a_stock_trade('sh.600000', 'PPO')
+
+    test_a_stock_trade(args['train_args']['stock_code'], args['train_args']['rl_model'])
 
 

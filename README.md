@@ -10,7 +10,8 @@
 nohup python -u python data/get_stock_data_train.py > get_train.log 2>&1 &
 nohup python -u python data/get_stock_data_test.py > get_test.log 2>&1 &
 ```
-#### 2. 运行模型
+#### 2. 设置配置文件config.yaml(也可使用默认配置参数)
+#### 3. 运行模型
 ```
 python main.py
 ```
@@ -22,7 +23,7 @@ python main.py
 - [Create custom gym environments from scratch — A stock market example](https://towardsdatascience.com/creating-a-custom-openai-gym-environment-for-stock-trading-be532be3910e)
 
 主要改动:
-1. 调整代码结构
+1. 调整代码结构,增加配置文件
 2. RL算法模型使用最新版本的stable-baselines3，之前的stable-baselines已处于维护状态，且容易遇到tensorflow版本不兼容的问题
 3. 丰富RL模型
 
