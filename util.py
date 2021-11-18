@@ -1,6 +1,7 @@
 import os
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import plotly.express as px
 
 def find_file(path, name):
     for root, dirs, files in os.walk(path):
@@ -13,7 +14,7 @@ def plot_daily_profits(stock_code, RL_model, daily_profits, dates, daily_opens, 
     fig = make_subplots(rows=2, cols=1, subplot_titles=("profit", "daily price"), shared_xaxes=True)
 
     fig.add_trace(
-        go.Scatter(x=dates, y=daily_profits),
+        go.Scatter(x=dates, y=daily_profits, mode='lines+markers'),
         row=1, col=1
     )
     fig.add_trace(

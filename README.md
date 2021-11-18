@@ -58,12 +58,12 @@ todo:
 
 盈利情况:
 
-PPO: 盈利`43292`
+PPO: 盈利`77801`
 
 <img src="img/sh.600006_PPO.png" alt="drawing" width="100%"/>
 
 
-A2C: 盈利`7618`
+A2C: 盈利`23054`
 
 <img src="img/sh.600006_A2C.png" alt="drawing" width="100%"/>
 
