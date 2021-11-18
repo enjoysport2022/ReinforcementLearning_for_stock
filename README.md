@@ -57,9 +57,9 @@ todo:
 
 盈利情况:
 
-<img src="img/sh.600006_PPO.png" width = "300" height = "800" alt="drawing"/>
+<img src="img/sh.600006_PPO.png" alt="drawing" width="100%"/>
 
-<img src="img/sh.600006_A2C.png" width = "300" height = "800" alt="drawing"/>
+<img src="img/sh.600006_A2C.png" alt="drawing" width="100%"/>
 
 
 ## 📚 参考资料
