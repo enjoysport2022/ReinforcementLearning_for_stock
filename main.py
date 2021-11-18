@@ -8,12 +8,13 @@ import yaml
 with open('config.yaml') as f:
     args = yaml.safe_load(f)
 
-def stock_trade(stock_file, RL_model):
-
-    # 模型训练
+def prepare_env(stock_file):
     df = pd.read_csv(stock_file)
     df = df.sort_values('date')
     env = DummyVecEnv([lambda: StockTradingEnv(df)])
+    return env, len(df)
+
+def train_model(env, RL_model):
     if RL_model == 'A2C':
         model = A2C("MlpPolicy", env, verbose=0, tensorboard_log='./log')
     elif RL_model == 'PPO':
@@ -25,28 +26,44 @@ def stock_trade(stock_file, RL_model):
 
     model.learn(total_timesteps=args['train_args']['total_timesteps'])
 
-    # 模型测试
-    day_profits = []
-    df_test = pd.read_csv(stock_file.replace('train', 'test'))
-    env = DummyVecEnv([lambda: StockTradingEnv(df_test)])
-    obs = env.reset()
-    for i in range(len(df_test) - 1):
+    return model
+
+def test_model(test_env, len_test, model):
+    dates = []
+    daily_profits = []
+    daily_opens = []
+    daily_closes = []
+    daily_highs = []
+    daily_lows = []
+    obs = test_env.reset()
+    for i in range(len_test - 1):
         action, _states = model.predict(obs)
-        obs, rewards, done, info = env.step(action)
-        profit = env.render()
-        day_profits.append(profit)
+        obs, rewards, done, info = test_env.step(action)
+        date, profit, open, close, high, low = test_env.render()
+        dates.append(date)
+        daily_profits.append(profit)
+        daily_opens.append(open)
+        daily_closes.append(close)
+        daily_highs.append(high)
+        daily_lows.append(low)
         if done:
             break
-    return day_profits
+    return dates, daily_profits, daily_opens, daily_closes, daily_highs, daily_lows
 
-def test_a_stock_trade(stock_code, RL_model):
+def train_and_test_strategy(stock_code, RL_model):
 
     stock_file = find_file('./data/train', str(stock_code))
-    daily_profits = stock_trade(stock_file, RL_model)
-    plot_daily_profits(stock_code, RL_model, daily_profits)
+    train_env, _ = prepare_env(stock_file)
+    model = train_model(train_env, RL_model)
+
+    stock_file = find_file('./data/test', str(stock_code))
+    test_env, len_test = prepare_env(stock_file)
+
+    dates, daily_profits, daily_opens, daily_closes, daily_highs, daily_lows = test_model(test_env, len_test, model)
+    plot_daily_profits(stock_code, RL_model, daily_profits, dates, daily_opens, daily_closes, daily_highs, daily_lows)
 
 if __name__ == '__main__':
 
-    test_a_stock_trade(args['train_args']['stock_code'], args['train_args']['rl_model'])
+    train_and_test_strategy(args['train_args']['stock_code'], args['train_args']['rl_model'])
 
 

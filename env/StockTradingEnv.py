@@ -20,18 +20,18 @@ INITIAL_ACCOUNT_BALANCE = args['env_args']['initial_account_balance']
 
 def feature_engineer(df, current_step):
     feas = [
-        df.loc[current_step - 1, 'open'] / MAX_SHARE_PRICE,
-        df.loc[current_step - 1, 'high'] / MAX_SHARE_PRICE,
-        df.loc[current_step - 1, 'low'] / MAX_SHARE_PRICE,
-        df.loc[current_step - 1, 'close'] / MAX_SHARE_PRICE,
-        df.loc[current_step - 1, 'volume'] / MAX_VOLUME,
-        df.loc[current_step - 1, 'amount'] / MAX_AMOUNT,
-        df.loc[current_step - 1, 'adjustflag'] / 10,
-        df.loc[current_step - 1, 'tradestatus'] / 1,
-        df.loc[current_step - 1, 'pctChg'] / 100,
-        df.loc[current_step - 1, 'peTTM'] / 1e4,
-        df.loc[current_step - 1, 'pbMRQ'] / 100,
-        df.loc[current_step - 1, 'psTTM'] / 100,
+        # df.loc[current_step - 1, 'open'] / MAX_SHARE_PRICE,
+        # df.loc[current_step - 1, 'high'] / MAX_SHARE_PRICE,
+        # df.loc[current_step - 1, 'low'] / MAX_SHARE_PRICE,
+        # df.loc[current_step - 1, 'close'] / MAX_SHARE_PRICE,
+        # df.loc[current_step - 1, 'volume'] / MAX_VOLUME,
+        # df.loc[current_step - 1, 'amount'] / MAX_AMOUNT,
+        # df.loc[current_step - 1, 'adjustflag'] / 10,
+        # df.loc[current_step - 1, 'tradestatus'] / 1,
+        # df.loc[current_step - 1, 'pctChg'] / 100,
+        # df.loc[current_step - 1, 'peTTM'] / 1e4,
+        # df.loc[current_step - 1, 'pbMRQ'] / 100,
+        # df.loc[current_step - 1, 'psTTM'] / 100,
 
         df.loc[current_step, 'open'] / MAX_SHARE_PRICE,
         df.loc[current_step, 'high'] / MAX_SHARE_PRICE,
@@ -63,7 +63,7 @@ class StockTradingEnv(gym.Env):
             low=np.array([0, 0]), high=np.array([3, 1]), dtype=np.float16)
 
         self.observation_space = spaces.Box(
-            low=0, high=1, shape=(30,), dtype=np.float16)
+            low=0, high=1, shape=(18,), dtype=np.float16)
 
     def _next_observation(self):
 
@@ -126,8 +126,9 @@ class StockTradingEnv(gym.Env):
 
         self.current_step += 1
 
-        if self.current_step >= len(self.df.loc[:, 'open'].values) - 1:
-            self.current_step = 6  # loop training
+        if self.current_step > len(self.df.loc[:, 'open'].values) - 1:
+            # self.current_step = 0  # loop training
+            self.current_step = random.randint(6, len(self.df) - 1)
             # done = True
 
 
@@ -148,7 +149,7 @@ class StockTradingEnv(gym.Env):
 
         return obs, reward, done, {}
 
-    def reset(self, new_df=None):
+    def reset(self, new_df=None, test=False):
         # Reset the state of the environment to an initial state
         self.balance = INITIAL_ACCOUNT_BALANCE
         self.net_worth = INITIAL_ACCOUNT_BALANCE
@@ -163,19 +164,28 @@ class StockTradingEnv(gym.Env):
             self.df = new_df
 
         # Set the current step to a random point within the data frame
-        self.current_step = random.randint(
-            6, len(self.df) - 1)
+        self.current_step = 0
 
         return self._next_observation()
 
     def render(self, mode='human', close=False):
         # Render the environment to the screen
         profit = self.net_worth - INITIAL_ACCOUNT_BALANCE
+        date = self.df.loc[self.current_step - 1, "date"]
+        open = self.df.loc[self.current_step - 1, "open"]
+        close = self.df.loc[self.current_step - 1, "close"]
+        high = self.df.loc[self.current_step - 1, "high"]
+        low = self.df.loc[self.current_step - 1, "low"]
+
         print('-'*30)
+        print(f'date: {date}')
         print(f'Step: {self.current_step}')
         print(f'Balance: {self.balance}')
         print(f'Shares held: {self.shares_held} (Total sold: {self.total_shares_sold})')
         print(f'Avg cost for held shares: {self.cost_basis} (Total sales value: {self.total_sales_value})')
         print(f'Net worth: {self.net_worth} (Max net worth: {self.max_net_worth})')
         print(f'Profit: {profit}')
-        return profit
+
+        print(f'open:{open} close:{close}, high:{high}, low: {low}')
+
+        return date, profit, open, close, high, low

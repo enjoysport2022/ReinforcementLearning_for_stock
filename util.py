@@ -1,6 +1,6 @@
 import os
-import matplotlib.pyplot as plt
-import matplotlib.font_manager as fm
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 def find_file(path, name):
     for root, dirs, files in os.walk(path):
@@ -8,16 +8,22 @@ def find_file(path, name):
             if name in fname:
                 return os.path.join(root, fname)
 
-font = fm.FontProperties(fname='font/wqy-microhei.ttc')
-plt.rcParams['axes.unicode_minus'] = False
+def plot_daily_profits(stock_code, RL_model, daily_profits, dates, daily_opens, daily_closes, daily_highs, daily_lows):
 
-def plot_daily_profits(stock_code, RL_model, daily_profits):
-    fig, ax = plt.subplots()
-    ax.plot(daily_profits, '-o', label=stock_code + "_" + RL_model, marker='o', ms=10, alpha=0.7, mfc='orange')
-    ax.grid()
-    plt.xlabel('step')
-    plt.ylabel('profit')
-    ax.legend(prop=font)
-    os.makedirs('./img/', exist_ok=True)
-    plt.savefig(f'./img/{stock_code + "_" + RL_model}.png')
-    plt.show()
+    fig = make_subplots(rows=2, cols=1, subplot_titles=("profit", "daily price"), shared_xaxes=True)
+
+    fig.add_trace(
+        go.Scatter(x=dates, y=daily_profits),
+        row=1, col=1
+    )
+    fig.add_trace(
+        go.Candlestick(x=dates,
+                       open=daily_opens, high=daily_highs,
+                       low=daily_lows, close=daily_closes),
+        row=2, col=1
+    )
+    fig.update_layout(xaxis_rangeslider_visible=False, showlegend=False, title_text=f"{stock_code}, {RL_model}")
+    fig.show()
+
+    # os.makedirs('./img/', exist_ok=True)
+    # fig.write_image(f'./img/{stock_code + "_" + RL_model}.png')

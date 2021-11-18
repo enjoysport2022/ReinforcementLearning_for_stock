@@ -116,18 +116,18 @@ reward = 1 if reward > 0 else -100
 ## 🕵️‍♀️ 单只股票模拟实验结果
 
 - 初始本金 `100000`
-- 股票代码：`sh.600000`
+- 股票代码：`sh.600006`
 - 训练集：1990-01-01至2019-12-31
 - 测试集：2020-01-01至2020-12-31
-- 模拟操作 `210` 天
+- 模拟操作 `242` 天
 
 盈利情况:
 
-PPO: 盈利`-8240`
-<img src="img/sh.600000_PPO.png" alt="drawing" width="70%"/>
+PPO: 盈利`43292`
+<img src="img/sh.600006_PPO.png" alt="drawing" width="70%"/>
 
-A2C: 盈利`248`
-<img src="img/sh.600000_A2C.png" alt="drawing" width="70%"/>
+A2C: 盈利`7618`
+<img src="img/sh.600006_A2C.png" alt="drawing" width="70%"/>
 
 
 
