@@ -2,6 +2,15 @@ import os
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import plotly.express as px
+from stable_baselines3.common.vec_env import DummyVecEnv
+from env.StockTradingEnv import StockTradingEnv
+import pandas as pd
+
+def prepare_env(stock_file):
+    df = pd.read_csv(stock_file)
+    df = df.sort_values('date')
+    env = DummyVecEnv([lambda: StockTradingEnv(df)])
+    return env, len(df)
 
 def find_file(path, name):
     for root, dirs, files in os.walk(path):
