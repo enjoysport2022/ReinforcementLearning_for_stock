@@ -1,4 +1,4 @@
-data/train/
-data/test/
+data/baostock/
+data/tushare_data/
 log/
 check_points/

@@ -42,7 +42,7 @@ def test_model(test_env, len_test, model):
 
 def test_strategy(stock_code, RL_model):
 
-    stock_file = find_file('./data/test', str(stock_code))
+    stock_file = find_file('./data/tushare_data/test', str(stock_code))
     test_env, len_test = prepare_env(stock_file)
 
     model = load_model(RL_model, stock_code)

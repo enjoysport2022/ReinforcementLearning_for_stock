@@ -5,10 +5,15 @@
 
 ## Quickstart
 #### 1. 数据获取
+以下任选一种:
 ```
 cd data
-nohup python -u get_stock_data_train.py > get_train.log 2>&1 &
-nohup python -u get_stock_data_test.py > get_test.log 2>&1 &
+nohup python -u get_stock_data_baostock_train.py > get_train.log 2>&1 &
+nohup python -u get_stock_data_baostock_test.py > get_test.log 2>&1 &
+```
+```
+cd data
+nohup python -u get_stock_data_tushare.py > get_data.log 2>&1 &
 ```
 #### 2. 设置配置文件config.yaml(也可使用默认配置参数)
 #### 3. 训练模型
@@ -57,6 +62,7 @@ A2C: 盈利`23054`
 2. [RL-Stock](https://github.com/wangshub/RL-Stock)
 3. Deep-Reinforcement-Learning-Hands-On, chapter 10
 4. [Personae](https://github.com/Ceruleanacg/Personae)
+5. [FinRL](https://github.com/AI4Finance-Foundation/FinRL/)
 
 
 主要改动:
@@ -70,6 +76,7 @@ A2C: 盈利`23054`
 
 优先todo: 
 允许手持多个股票的环境
+环境和数据的readme优化
 
 todo:
 - 将特征接口抽出来

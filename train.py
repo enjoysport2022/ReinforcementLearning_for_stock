@@ -22,7 +22,7 @@ def train_model(env, RL_model='PPO'):
 
 def train_strategy(stock_code, RL_model):
 
-    stock_file = find_file('./data/train', str(stock_code))
+    stock_file = find_file('./data/tushare_data/train', str(stock_code))
     train_env, _ = prepare_env(stock_file)
     model = train_model(train_env, RL_model)
 

@@ -60,7 +60,7 @@ if __name__ == '__main__':
     codes = ['sh.600000', 'sh.600006']
 
     # 获取全部股票的日K线数据
-    datapath_train = './train'
+    datapath_train = './baostock/train'
     mkdir(datapath_train)
     downloader = Downloader(datapath_train, date_start='1990-01-01', date_end='2019-12-31')
     downloader.run(codes)
