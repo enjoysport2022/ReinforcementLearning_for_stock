@@ -4,6 +4,8 @@
 - 本网站所载的资料并不构成投资的意见或建议，据此操作风险自担。股市有风险，投资需谨慎！
 
 ## Quickstart
+
+### 单股票
 #### 1. 数据获取
 以下任选一种:
 ```
@@ -25,6 +27,10 @@ python train.py
 python test.py
 ```
 
+### 多股票
+```
+python multi_stock_ensemble_strategy.py
+```
 
 ## 环境
 - 单只股票
@@ -75,8 +81,10 @@ A2C: 盈利`23054`
 7. 测试集长度设置为1年
 
 优先todo: 
-允许手持多个股票的环境
-环境和数据的readme优化
+- 环境:允许手持多个股票的环境
+- 模型: 其他包的rl模型调用: elegantrl, rllib
+参考: https://github.com/AI4Finance-Foundation/FinRL/tree/master/finrl/drl_agents
+- 模型: 调研baselines3
 
 todo:
 - 将特征接口抽出来
@@ -87,5 +95,4 @@ todo:
 - 特征优化: 外部数据,如天气
 - 策略优化: 组合策略
 - 选股说明
-- 模型优化
 - 可视化优化
