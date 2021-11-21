@@ -3,7 +3,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import plotly.express as px
 from stable_baselines3.common.vec_env import DummyVecEnv
-from env.StockTradingEnv import StockTradingEnv
+from env.SingleStockEnv import StockTradingEnv
 import pandas as pd
 
 def prepare_env(stock_file):
