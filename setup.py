@@ -13,7 +13,8 @@ setup(name="ReinforcementLearning_for_stock",
             'numpy',
             'pandas',
             'sklearn',
-            'tqdm'
+            'tqdm',
+            '4paradigm/AutoX'
         ],
         python_requires='>=3.6',
         packages=find_packages(exclude=['data', 'img', 'log']),
